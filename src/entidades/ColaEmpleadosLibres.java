@@ -41,6 +41,12 @@ public class ColaEmpleadosLibres {
         return this.empleados.size();
     }
     
+    public Empleado consultarProximo() {
+        if (!estaVacia()) {
+            return this.empleados.getFirst();
+        }
+        return null;
+    }
  
     
  

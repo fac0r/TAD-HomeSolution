@@ -2,6 +2,8 @@ package entidades;
 
 public class EmpleadoPlanta extends Empleado{
 	
+	
+
 	private double valorDia;
 	private String categoria;
 	private boolean registraRetrasoEnProyectoActual;
@@ -41,5 +43,12 @@ public class EmpleadoPlanta extends Empleado{
 	public void asignarNroDeLegajoAEmpleado(int nroLegajo) {
 		
 		this.n_legajo= nroLegajo;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return "EmpleadoPlanta [" + super.toString() + " valorDia=" + valorDia + ", categoria=" + categoria
+				+ ", registraRetrasoEnProyectoActual=" + registraRetrasoEnProyectoActual + "]";
 	}
 }

@@ -7,7 +7,10 @@ import java.util.Map;
 
 public class Proyecto {
 	
-	  	private int id;
+	  
+
+
+		private int id;
 	  
 
 
@@ -71,6 +74,10 @@ public class Proyecto {
 
 		public int getId() {
 			return id;
+		}
+		
+		public Map<Integer, Tarea> getTareas() {
+			return tareas;
 		}
 
 

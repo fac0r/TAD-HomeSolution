@@ -2,6 +2,14 @@ package entidades;
 
 public abstract class Empleado {
 	
+	
+
+
+
+
+
+
+
 	private String nombre;
 	protected int n_legajo;
 	private boolean estado;
@@ -64,6 +72,17 @@ public abstract class Empleado {
 		this.demorasInformadas = demorasInformadas;
 	}
 	 
+
+	@Override
+	public String toString() {
+		return "Empleado [nombre=" + nombre + ", n_legajo=" + n_legajo + ", estado=" + estado + ", demorasInformadas="
+				+ demorasInformadas + "]";
+	}
+
+	
+	
+
+
 
 
 }

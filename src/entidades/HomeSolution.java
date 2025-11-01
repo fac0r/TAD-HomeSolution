@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class HomeSolution implements IHomeSolution {
@@ -21,7 +22,7 @@ public class HomeSolution implements IHomeSolution {
 
 	public HomeSolution() {
 		this.nombreEmpresa = "HomeSolution";
-	    this.clientes = new HashMap<>();     
+	    this.clientes = new TreeMap<>();     
 	    this.proyectos = new TreeMap<>();    
 	    this.listaEmpleados = new LinkedList<>();
 	    this.idEmpleados= new LinkedList<>();
@@ -47,6 +48,15 @@ public class HomeSolution implements IHomeSolution {
 		
 		}
 	
+	
+	private void informarStoreDeColaDeEmpleados() {
+		
+		System.out.println("Voy a comprobar la cola de Empleados");
+		
+		System.out.println("La cantidad de empleados que hay actualmente es  " + colaEmpleadosLibres.informarCantidadDeEmpleadosEnCola());
+		System.out.println("El  empleado a retornar sería : " + colaEmpleadosLibres.consultarProximo());
+	}
+	
 	@Override
 	public void registrarEmpleado(String nombre, double valor) throws IllegalArgumentException {
 		
@@ -59,6 +69,10 @@ public class HomeSolution implements IHomeSolution {
 		listaEmpleados.add(empleado);
 		Tupla <Integer, String> nuevoEmpleado = new Tupla<>((Integer) ultimoIdEmpleado, empleado.getNombre());
 		idEmpleados.add(nuevoEmpleado);
+		
+		colaEmpleadosLibres.agregarEmpleado(empleado);
+		
+		informarStoreDeColaDeEmpleados();
 		
 		System.out.println("Metodo registrarEmpleadoContratado Finalizado");
 		
@@ -78,6 +92,10 @@ public class HomeSolution implements IHomeSolution {
 		Tupla <Integer, String> nuevoEmpleado = new Tupla<>((Integer) ultimoIdEmpleado, empleado.getNombre());
 		idEmpleados.add(nuevoEmpleado);
 		
+		colaEmpleadosLibres.agregarEmpleado(empleado);
+		
+		informarStoreDeColaDeEmpleados();
+		
 		System.out.println("Metodo registrarEmpleadoPlanta Finalizado");
 		
 	}
@@ -96,6 +114,22 @@ public class HomeSolution implements IHomeSolution {
 		
 	}
 	
+	private int retornarUltimoIdCliente() {
+		
+		if (clientes.isEmpty()) {
+			System.out.println("Debido a que es el primer cliente se retornara la id 1" ); 
+			return 1;
+			
+		}
+		else {
+		Integer ultimoKey = (((TreeMap<Integer, Cliente>) clientes).lastKey()+1);
+		System.out.println("La funcion retornarUltimoIdCLiente retornara la id " + ultimoKey); 
+		
+		return ultimoKey;
+		}}
+	
+	
+	
 	@Override
 	public void registrarProyecto(String[] titulos, String[] descripcion, double[] dias, String domicilio,
 			String[] cliente, String inicio, String fin) throws IllegalArgumentException {
@@ -103,18 +137,87 @@ public class HomeSolution implements IHomeSolution {
 		System.out.println("Ingreso al metodo RegistrarProyecto");
 		
 		Proyecto proyecto = new Proyecto(cliente,domicilio,titulos,descripcion, dias,inicio,fin);
-		int ultimaKey= retornarUltimoIdProyecto();
 		
+		for(String c: cliente) {
+		System.out.print(c + " ");}
+		System.out.println(" ");
+		
+		int ultimaKeyCliente= retornarUltimoIdCliente(); 
+		
+		System.out.println("La id que se le asigna a cliente es " + ultimaKeyCliente);
+	
+		
+		Cliente c = new Cliente (ultimaKeyCliente, cliente[0], cliente[1], cliente[2]); 
+		
+		clientes.put(ultimaKeyCliente, c);
+		
+		
+		int ultimaKey= retornarUltimoIdProyecto();
 		proyecto.asignarNroIdProyecto(ultimaKey);
 		proyectos.put( ultimaKey, proyecto);
+		
+		for(Cliente listaClientes: clientes.values()) {
+			
+			System.out.println(listaClientes);
+		}
 		
 		System.out.println("Finaliza el  metodo RegistrarProyecto");
 	}
 
-
+	
+	private Proyecto obtenerProyectoPorId(int id) {
+		
+		Proyecto proyecto = proyectos.get(id);
+		
+		return proyecto;
+	}
+	
+	private Map<Integer, Tarea> obtenerElMapDeTareasDeUnProyecto(Proyecto proyecto) {
+		
+		Map<Integer, Tarea>  tareas= proyecto.getTareas();
+		
+		return tareas;
+	}
+	
+	
+	private void cambiarEstadoDeEmpleadoLibreEnAsignado(Empleado empleado) {
+		
+		empleado.setEstado(true);
+	}
+	
+	private void asignarResponsableEnTarea(Tarea tarea) {
+		
+		Empleado empleadoAAsignar= colaEmpleadosLibres.desagregarEmpleado();
+		
+		cambiarEstadoDeEmpleadoLibreEnAsignado(empleadoAAsignar);
+		
+		tarea.setResponsable(empleadoAAsignar);
+	} 
+	
 	@Override
 	public void asignarResponsableEnTarea(Integer numero, String titulo) throws Exception {
-		// TODO Auto-generated method stub
+		
+		//Recibo el Id del Proyecto y el titulo de la tarea
+		System.out.println("Estoy en asignarResponsableEnTarea. Los parametros que recibo son " + numero + " " + titulo);
+		
+		Proyecto proyecto = obtenerProyectoPorId(numero);
+		
+		System.out.println("El proyecto que recibo es " + proyecto);
+		
+		Map<Integer, Tarea>  tareas= obtenerElMapDeTareasDeUnProyecto(proyecto);
+		
+		System.out.println("lareas que recibo son " + tareas);
+		
+		for (Tarea tarea: tareas.values()) {
+			
+			System.out.println("Recorro el foreach de tareas");
+			
+		if (tarea.getTitulo().compareTo(titulo)== 0) {
+			asignarResponsableEnTarea(tarea);
+			System.out.println("El empleado ha sido asignado  " + tarea);
+		}}
+		
+		
 		
 	}
 
@@ -293,8 +396,13 @@ public class HomeSolution implements IHomeSolution {
 		
 			String [] listaTitulos= listaDeTareas(tareas);
 		
-		System.out.println("La listaTituylos es" + listaTitulos);	
-			
+		System.out.print("La lista Titulos es [ " );	
+		for (String tarea: listaTitulos) {
+			System.out.print(tarea + " ");
+		} 
+		System.out.println(" ]");
+		System.out.println(" ");
+		
 		return listaTitulos;
 	
 	}
