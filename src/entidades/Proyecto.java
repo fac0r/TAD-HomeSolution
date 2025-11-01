@@ -10,6 +10,9 @@ public class Proyecto {
 	  
 
 
+	
+
+
 		private int id;
 	  
 
@@ -20,7 +23,7 @@ public class Proyecto {
 	    private String fechaInicio;
 	    private String fechaFin;
 	    private double [] duracion;
-	    private boolean estado;
+	    private String estado;
 	    private boolean demorado;
 	    
 	    public Proyecto(String []cliente, String direccion, String [] listaTareas, String [] descripciones,  double [] duracion, String fechaInicio, String fechaFin) {
@@ -31,7 +34,7 @@ public class Proyecto {
 	        this.fechaInicio = fechaInicio;
 	        this.fechaFin = fechaFin;
 	        this.duracion= duracion;
-	        this.setEstado(false); // false = en progreso, true = completado
+	        this.setEstado(Estado.activo);  
 	        this.demorado = false;
 	        
 	       
@@ -62,12 +65,12 @@ public class Proyecto {
 	    }
 
 
-		public boolean isEstado() {
+		public String isEstado() {
 			return estado;
 		}
 
 
-		public void setEstado(boolean estado) {
+		public void setEstado(String estado) {
 			this.estado = estado;
 		}
 
@@ -79,7 +82,41 @@ public class Proyecto {
 		public Map<Integer, Tarea> getTareas() {
 			return tareas;
 		}
+		
+		
+		private Integer consultarUltimaKey() {
+		   
+		    Integer ultimaKey = 0;
+		    for (Integer key : tareas.keySet()) {
+		        if (key > ultimaKey) {
+		            ultimaKey= key;
+		        }
+		    }
+		    return ultimaKey +1;}
+		
+		
+		public void agregarTarea(String titulo, String descripcion, double  dias) 
+		{
+			
+	            	Tarea t = new Tarea ( titulo, descripcion, dias );
+	            	
+	            	this.tareas.put(consultarUltimaKey(), t);
+	                
+	               
+		}
+		
 
+		
+		
+		public String getFechaFin() {
+			return fechaFin;
+		}
+
+
+
+		public void setFechaFin(String fechaFin) {
+			this.fechaFin = fechaFin;
+		}
 
 		@Override
 		public String toString() {

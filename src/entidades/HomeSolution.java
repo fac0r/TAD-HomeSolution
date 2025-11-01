@@ -1,5 +1,6 @@
 package entidades;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -194,6 +195,11 @@ public class HomeSolution implements IHomeSolution {
 		tarea.setResponsable(empleadoAAsignar);
 	} 
 	
+	
+	
+	
+	
+	
 	@Override
 	public void asignarResponsableEnTarea(Integer numero, String titulo) throws Exception {
 		
@@ -221,10 +227,91 @@ public class HomeSolution implements IHomeSolution {
 		
 	}
 
-
+	private void restaurarColaEmpeladosLibres(ColaEmpleadosLibres original, ColaEmpleadosLibres backUp) {
+		
+		while (!backUp.estaVacia()) {
+			Empleado actual =backUp.desagregarEmpleado();
+			original.agregarEmpleado(actual);
+			
+		}
+		
+		System.out.println("Luego de restaurarColaEmpleadosLibres debe quedar con un empleado menos del que tenia , ahora tiene : " + original.informarCantidadDeEmpleadosEnCola());
+		
+	}
+	
+	private void generarCorrespondenciaEnColaEmpleados(Empleado empleado) {
+		
+		ColaEmpleadosLibres colaTemporal = new ColaEmpleadosLibres();
+		boolean encontrado = false;
+	    
+	    while (!colaEmpleadosLibres.estaVacia()) {
+	        Empleado actual = colaEmpleadosLibres.desagregarEmpleado();
+	        if (actual.equals(empleado) && !encontrado) {
+	            encontrado = true;  
+	             
+	        } else {
+	         
+	            colaTemporal.agregarEmpleado(actual);
+	        }
+	    }
+	    
+	    System.out.println("Antes de restaurar la colaEmpleados Libre queda vacia " + colaEmpleadosLibres.estaVacia());
+	    
+	restaurarColaEmpeladosLibres(colaEmpleadosLibres, colaTemporal);
+		
+	}
+	
+	
+	
+	private void asignarResponsableMenosRetraso(Tarea tarea) {
+		
+		
+		int cantidadDeRetrasos =100;
+		 
+		 Empleado empleadoAAsignar = null;
+		
+		for(Empleado empleado: listaEmpleados) {
+			 
+			
+			if (empleado.getDemorasInformadas() < cantidadDeRetrasos) {
+				cantidadDeRetrasos =empleado.getDemorasInformadas();
+				empleadoAAsignar = empleado;
+					 
+				}
+			}
+		if (empleadoAAsignar != null) {
+			cambiarEstadoDeEmpleadoLibreEnAsignado(empleadoAAsignar);
+	        tarea.setResponsable(empleadoAAsignar);}
+		
+		generarCorrespondenciaEnColaEmpleados(empleadoAAsignar);
+		
+		}
+		
+		 
+	
+	
 	@Override
 	public void asignarResponsableMenosRetraso(Integer numero, String titulo) throws Exception {
-		// TODO Auto-generated method stub
+		
+		//Recibo el Id del Proyecto y el titulo de la tarea
+		System.out.println("Estoy en asignarResponsableEnTarea. Los parametros que recibo son " + numero + " " + titulo);
+		
+		Proyecto proyecto = obtenerProyectoPorId(numero);
+		
+		System.out.println("El proyecto que recibo es " + proyecto);
+		
+		Map<Integer, Tarea>  tareas= obtenerElMapDeTareasDeUnProyecto(proyecto);
+		
+		System.out.println("lareas que recibo son " + tareas);
+		
+		for (Tarea tarea: tareas.values()) {
+			
+			System.out.println("Recorro el foreach de tareas");
+			
+		if (tarea.getTitulo().compareTo(titulo)== 0) {
+			asignarResponsableMenosRetraso(tarea);
+			System.out.println("El empleado ha sido asignado  " + tarea);
+		}}
 		
 	}
 
@@ -232,7 +319,20 @@ public class HomeSolution implements IHomeSolution {
 	@Override
 	public void registrarRetrasoEnTarea(Integer numero, String titulo, double cantidadDias)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+		
+		System.out.println("Estoy en registrarRetrasoEnTarea que tiene las variable numero id de proyecto  " + numero +" y titulo " +  titulo + "cantidad de dia " +cantidadDias);
+		
+		Proyecto proyecto = obtenerProyectoPorId(numero);
+		Map<Integer, Tarea>  tareas= obtenerElMapDeTareasDeUnProyecto( proyecto);
+		
+		for (Tarea tarea: tareas.values()) {
+			
+			System.out.println("Recorro el foreach de tareas");
+			
+		if (tarea.getTitulo().compareTo(titulo)== 0) {
+			tarea.setDuracion(cantidadDias);
+			System.out.println("La tarea " + tarea + "ha sido actualizada con la candidad de dias " + tarea.getDuracion());
+		}}
 		
 	}
 
@@ -240,21 +340,43 @@ public class HomeSolution implements IHomeSolution {
 	@Override
 	public void agregarTareaEnProyecto(Integer numero, String titulo, String descripcion, double dias)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+		 
+		Proyecto proyecto = obtenerProyectoPorId(numero);
+		proyecto.agregarTarea(titulo, descripcion, dias);
 		
 	}
 
 
 	@Override
 	public void finalizarTarea(Integer numero, String titulo) throws Exception {
-		// TODO Auto-generated method stub
+		
+
+		System.out.println("Estoy en finalizar tarea que tiene las variable numero id de proyecto  " + numero +" y titulo " +  titulo);
+		
+		Proyecto proyecto = obtenerProyectoPorId(numero);
+		Map<Integer, Tarea>  tareas= obtenerElMapDeTareasDeUnProyecto( proyecto);
+		
+		for (Tarea tarea: tareas.values()) {
+			
+			System.out.println("Recorro el foreach de tareas");
+			
+		if (tarea.getTitulo().compareTo(titulo)== 0) {
+			tarea.setEstado(Estado.finalizado);
+			System.out.println("La tarea " + tarea + "ha sido actualizada como " + tarea.isEstado());
+		}}
 		
 	}
 
 
 	@Override
 	public void finalizarProyecto(Integer numero, String fin) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+		
+		System.out.println("Estoy en finalizarProyecto y recibo los parametros numero " + numero + " y fin : " + fin );
+		
+		Proyecto proyecto = obtenerProyectoPorId(numero);
+		
+		proyecto.setFechaFin(fin);
+		proyecto.setEstado(Estado.finalizado);
 		
 	}
 
@@ -283,14 +405,39 @@ public class HomeSolution implements IHomeSolution {
 	@Override
 	public List<Tupla<Integer, String>> proyectosFinalizados() {
 		
-		return null;
+		LinkedList<Tupla<Integer, String>> proyectosFinalizados = new LinkedList<>();
+		
+		for (Proyecto proyecto : proyectos.values()) {
+			if(proyecto.isEstado() == Estado.finalizado) {
+				
+				Tupla<Integer, String> p = new Tupla<>(proyecto.getId(), proyecto.toString());
+				proyectosFinalizados.add(p);
+				
+				System.out.println(proyecto);
+			}
+			
+		}
+		return proyectosFinalizados;
+		
 	}
 
 
 	@Override
 	public List<Tupla<Integer, String>> proyectosPendientes() {
-		// TODO Auto-generated method stub
-		return null;
+
+		LinkedList<Tupla<Integer, String>> proyectosPendientes = new LinkedList<>();
+		
+		for (Proyecto proyecto : proyectos.values()) {
+			if(proyecto.isEstado() == Estado.pendiente) {
+				
+				Tupla<Integer, String> p = new Tupla<>(proyecto.getId(), proyecto.toString());
+				proyectosPendientes.add(p);
+				
+				System.out.println(proyecto);
+			}
+			
+		}
+		return proyectosPendientes;
 	}
 
 
@@ -300,7 +447,7 @@ public class HomeSolution implements IHomeSolution {
 		LinkedList<Tupla<Integer, String>> proyectosActivos = new LinkedList<>();
 		
 		for (Proyecto proyecto : proyectos.values()) {
-			if(proyecto.isEstado() == false) {
+			if(proyecto.isEstado() == Estado.activo) {
 				
 				Tupla<Integer, String> p = new Tupla<>(proyecto.getId(), proyecto.toString());
 				proyectosActivos.add(p);
@@ -315,8 +462,18 @@ public class HomeSolution implements IHomeSolution {
 
 	@Override
 	public Object[] empleadosNoAsignados() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ArrayList<Empleado> empleadosNoAsignados = new ArrayList<>();
+		
+		for (Empleado empleado: listaEmpleados) {
+			if(!empleado.isEstado()) {
+				
+				empleadosNoAsignados.add(empleado);
+			}
+		}
+		
+		
+		return empleadosNoAsignados.toArray();
 	}
 
 
@@ -343,6 +500,8 @@ public class HomeSolution implements IHomeSolution {
 
 	@Override
 	public Object[] tareasProyectoNoAsignadas(Integer numero) {
+		
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -410,14 +569,16 @@ public class HomeSolution implements IHomeSolution {
 
 	@Override
 	public String consultarDomicilioProyecto(Integer numero) {
-		// TODO Auto-generated method stub
+		System.out.println("Estoy en consultarDomicilioProyecto y recibo el parametro :" + numero);
 		return null;
 	}
 
 
 	@Override
 	public boolean tieneRestrasos(Integer legajo) {
-		// TODO Auto-generated method stub
+		
+		System.out.println("Estoy en tiene retrasos y recibo el parametro " + legajo);
+		
 		return false;
 	}
 

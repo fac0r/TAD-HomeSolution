@@ -4,11 +4,12 @@ public class Tarea {
 	
 	
 	
+
 		private String titulo;
 	    private String descripcion;
 	    private double duracion;
 	    private Empleado responsable;
-	    private boolean estado;
+	    private String estado;
 	    
 	
 
@@ -17,7 +18,7 @@ public class Tarea {
 	        this.descripcion = descripcion;
 	        this.duracion = duracion;
 	        this.setResponsable(null);
-	        this.setEstado(false); // Por defecto, la tarea no está completada
+	        this.setEstado(Estado.pendiente); // Por defecto, la tarea no está completada
 	    }
 
 
@@ -34,6 +35,11 @@ public class Tarea {
 		public double getDuracion() {
 			return duracion;
 		}
+		
+
+		public void setDuracion(double duracion) {
+		this.duracion = duracion;
+	}
 
 
 		public Empleado getResponsable() {
@@ -46,13 +52,13 @@ public class Tarea {
 		}
 
 
-		public boolean isEstado() {
+		public String isEstado() {
 			return estado;
 		}
 
 
-		public void setEstado(boolean estado) {
-			this.estado = estado;
+		public void setEstado(String pendiente) {
+			this.estado = pendiente;
 		}
 
 	    
