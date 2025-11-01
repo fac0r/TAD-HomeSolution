@@ -42,6 +42,12 @@ public class EmpleadoContratado extends Empleado {
 		this.n_legajo= nroLegajo;
 	}
 
+	
+
+	public int getN_legajo() {
+		return n_legajo;
+	}
+	
 	@Override
 	public String toString() {
 		return "EmpleadoContratado [" + super.toString() + "  valorHora=" + valorHora + "]";

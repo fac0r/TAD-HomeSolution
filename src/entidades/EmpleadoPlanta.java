@@ -46,6 +46,12 @@ public class EmpleadoPlanta extends Empleado{
 	}
 	
 	
+
+	public int getN_legajo() {
+		return n_legajo;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "EmpleadoPlanta [" + super.toString() + " valorDia=" + valorDia + ", categoria=" + categoria

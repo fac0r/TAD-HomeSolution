@@ -6,10 +6,6 @@ public abstract class Empleado {
 
 
 
-
-
-
-
 	private String nombre;
 	protected int n_legajo;
 	private boolean estado;
@@ -70,6 +66,11 @@ public abstract class Empleado {
 
 	public void setDemorasInformadas(int demorasInformadas) {
 		this.demorasInformadas = demorasInformadas;
+	}
+	
+
+	public int getN_legajo() {
+		return n_legajo;
 	}
 	 
 

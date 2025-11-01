@@ -19,7 +19,7 @@ public class ColaEmpleadosLibres {
     
   
     public void agregarEmpleado(Empleado empleado) {
-        if (empleado != null) {
+        if (empleado != null && !empleado.isEstado()) {
             this.empleados.addLast(empleado);
         }
     }

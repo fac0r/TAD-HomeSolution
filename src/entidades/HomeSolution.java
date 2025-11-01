@@ -186,6 +186,12 @@ public class HomeSolution implements IHomeSolution {
 		empleado.setEstado(true);
 	}
 	
+	
+	private void cambiarEstadoDeEmpleadoAsignadoEnLibre(Empleado empleado) {
+		
+		empleado.setEstado(false);
+	}
+	
 	private void asignarResponsableEnTarea(Tarea tarea) {
 		
 		Empleado empleadoAAsignar= colaEmpleadosLibres.desagregarEmpleado();
@@ -223,7 +229,8 @@ public class HomeSolution implements IHomeSolution {
 			System.out.println("El empleado ha sido asignado  " + tarea);
 		}}
 		
-		
+		System.out.println("El proyecto ha quedado asi: "+ proyecto);
+		System.out.println("Las tareas han quedado asi: " + proyecto.retornarListaDeTareas() );
 		
 	}
 
@@ -273,17 +280,18 @@ public class HomeSolution implements IHomeSolution {
 		for(Empleado empleado: listaEmpleados) {
 			 
 			
-			if (empleado.getDemorasInformadas() < cantidadDeRetrasos) {
+			if ((empleado.getDemorasInformadas() < cantidadDeRetrasos) && (!empleado.isEstado())) {
 				cantidadDeRetrasos =empleado.getDemorasInformadas();
 				empleadoAAsignar = empleado;
 					 
 				}
 			}
-		if (empleadoAAsignar != null) {
+		if (empleadoAAsignar != null)  {
 			cambiarEstadoDeEmpleadoLibreEnAsignado(empleadoAAsignar);
 	        tarea.setResponsable(empleadoAAsignar);}
 		
 		generarCorrespondenciaEnColaEmpleados(empleadoAAsignar);
+		
 		
 		}
 		
@@ -309,6 +317,8 @@ public class HomeSolution implements IHomeSolution {
 			System.out.println("Recorro el foreach de tareas");
 			
 		if (tarea.getTitulo().compareTo(titulo)== 0) {
+			
+			
 			asignarResponsableMenosRetraso(tarea);
 			System.out.println("El empleado ha sido asignado  " + tarea);
 		}}
@@ -381,17 +391,62 @@ public class HomeSolution implements IHomeSolution {
 	}
 
 
+	private Empleado encontrarEmpleadoPorLegajo(Integer legajo) {
+		
+		for(Empleado empleado: listaEmpleados) {
+			 
+			
+			if (empleado.getN_legajo() == legajo && empleado.isEstado()==false) {
+				
+				return empleado;
+					 
+				}
+			}
+		return null;
+	} 
+	
+	
+	
+	
 	@Override
 	public void reasignarEmpleadoEnProyecto(Integer numero, Integer legajo, String titulo) throws Exception {
-		// TODO Auto-generated method stub
+			
+		System.out.println("Estoy en reasignarEmpleadoEnproyecto los parametros que recibo son: "+ numero +" " +   legajo + " "  +titulo );
+		
+		Proyecto proyecto = obtenerProyectoPorId(numero);
+		
+		Empleado empleadoAAsignar = encontrarEmpleadoPorLegajo(legajo);
+		
+		 Map<Integer, Tarea> tareas = proyecto.retornarListaDeTareas();
+		
+		 for (Tarea tarea: tareas.values()) {
+				
+				System.out.println("Recorro el foreach de tareas");
+				
+			if (tarea.getTitulo().compareTo(titulo)== 0) { 
+					
+					System.out.println("Se encontro al empleado");
+					
+					Empleado empleadoQueSeSuplantara = tarea.getResponsable();
+					empleadoQueSeSuplantara.setEstado(false);
+					
+					colaEmpleadosLibres.agregarEmpleado(empleadoQueSeSuplantara);
+					
+					tarea.setResponsable(empleadoAAsignar);
+					System.out.println("Se ha asignado al empleado");}
+					
+			}
+		 
+		 cambiarEstadoDeEmpleadoLibreEnAsignado(empleadoAAsignar);
+		 
+		generarCorrespondenciaEnColaEmpleados(empleadoAAsignar);
 		
 	}
 
 
 	@Override
 	public void reasignarEmpleadoConMenosRetraso(Integer numero, String titulo) throws Exception {
-		// TODO Auto-generated method stub
-		
+		asignarResponsableMenosRetraso(numero, titulo);
 	}
 
 
@@ -462,18 +517,22 @@ public class HomeSolution implements IHomeSolution {
 
 	@Override
 	public Object[] empleadosNoAsignados() {
-		
-		ArrayList<Empleado> empleadosNoAsignados = new ArrayList<>();
-		
-		for (Empleado empleado: listaEmpleados) {
-			if(!empleado.isEstado()) {
-				
-				empleadosNoAsignados.add(empleado);
-			}
-		}
-		
-		
-		return empleadosNoAsignados.toArray();
+	    ArrayList<String> legajos = new ArrayList<>();
+	    
+	    for (Empleado empleado : listaEmpleados) {
+	        if (!empleado.isEstado()) {
+	            // Agregar solo el NÚMERO como String
+	            legajos.add(String.valueOf(empleado.getN_legajo()));
+	        }
+	    }
+	    
+	    // Convertir ArrayList a array
+	    String[] resultado = new String[legajos.size()];
+	    for (int i = 0; i < legajos.size(); i++) {
+	        resultado[i] = legajos.get(i);
+	    }
+	    
+	    return resultado;
 	}
 
 
