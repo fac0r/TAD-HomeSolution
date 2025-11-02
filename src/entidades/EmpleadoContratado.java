@@ -12,11 +12,7 @@ public class EmpleadoContratado extends Empleado {
 		this.valorHora= valor;
 	}
 
-	@Override
-	public void informarDemora(int n_legajo_empleado) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public void informarBajaDeTarea(int n_legajo_empleado) {
@@ -52,5 +48,7 @@ public class EmpleadoContratado extends Empleado {
 	public String toString() {
 		return "EmpleadoContratado [" + super.toString() + "  valorHora=" + valorHora + "]";
 	}
+
+
 
 }

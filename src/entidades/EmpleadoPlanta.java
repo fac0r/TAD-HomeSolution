@@ -15,11 +15,6 @@ public class EmpleadoPlanta extends Empleado{
 	     this.registraRetrasoEnProyectoActual = false;
 	}
 
-	@Override
-	public void informarDemora(int n_legajo_empleado) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void informarBajaDeTarea(int n_legajo_empleado) {
@@ -57,4 +52,6 @@ public class EmpleadoPlanta extends Empleado{
 		return "EmpleadoPlanta [" + super.toString() + " valorDia=" + valorDia + ", categoria=" + categoria
 				+ ", registraRetrasoEnProyectoActual=" + registraRetrasoEnProyectoActual + "]";
 	}
+
+	
 }

@@ -318,6 +318,9 @@ public class HomeSolution implements IHomeSolution {
 			
 		if (tarea.getTitulo().compareTo(titulo)== 0) {
 			
+			if (tarea.getResponsable()!=null ){
+				recolocarEnColaEmpleadoQueSeraSuplantado(tarea);
+			};
 			
 			asignarResponsableMenosRetraso(tarea);
 			System.out.println("El empleado ha sido asignado  " + tarea);
@@ -342,7 +345,15 @@ public class HomeSolution implements IHomeSolution {
 		if (tarea.getTitulo().compareTo(titulo)== 0) {
 			tarea.setDuracion(cantidadDias);
 			System.out.println("La tarea " + tarea + "ha sido actualizada con la candidad de dias " + tarea.getDuracion());
-		}}
+			
+			    for (Empleado empleado : listaEmpleados) {
+			        if (empleado.getN_legajo() ==  (tarea.getResponsable()).getN_legajo()) {
+			            empleado.informarDemora();
+			            System.out.println("Ahora la cantidad de demoras del Empleado es  : " + empleado);
+			        }
+			    }
+			}
+		}
 		
 	}
 
@@ -408,6 +419,16 @@ public class HomeSolution implements IHomeSolution {
 	
 	
 	
+	private void recolocarEnColaEmpleadoQueSeraSuplantado(Tarea tarea) {
+		
+		 
+		
+		Empleado empleadoQueSeSuplantara = tarea.getResponsable();
+		cambiarEstadoDeEmpleadoAsignadoEnLibre(empleadoQueSeSuplantara);
+		
+		colaEmpleadosLibres.agregarEmpleado(empleadoQueSeSuplantara);
+	}
+	
 	@Override
 	public void reasignarEmpleadoEnProyecto(Integer numero, Integer legajo, String titulo) throws Exception {
 			
@@ -427,10 +448,10 @@ public class HomeSolution implements IHomeSolution {
 					
 					System.out.println("Se encontro al empleado");
 					
-					Empleado empleadoQueSeSuplantara = tarea.getResponsable();
-					empleadoQueSeSuplantara.setEstado(false);
 					
-					colaEmpleadosLibres.agregarEmpleado(empleadoQueSeSuplantara);
+					
+					recolocarEnColaEmpleadoQueSeraSuplantado(tarea);
+					
 					
 					tarea.setResponsable(empleadoAAsignar);
 					System.out.println("Se ha asignado al empleado");}
@@ -446,6 +467,10 @@ public class HomeSolution implements IHomeSolution {
 
 	@Override
 	public void reasignarEmpleadoConMenosRetraso(Integer numero, String titulo) throws Exception {
+		
+	 
+		
+		
 		asignarResponsableMenosRetraso(numero, titulo);
 	}
 
