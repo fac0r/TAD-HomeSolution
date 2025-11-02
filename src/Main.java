@@ -14,9 +14,9 @@ public class Main {
         double duracion[]={4,2,1,.5};
         String cliente[]={"Pedro Gomez","pedro@hotmail.com","11-9280-6647"};
         homeSolution.registrarProyecto(titulos,descripciones,duracion,"San Martin 1000",cliente,"2025-11-01","2025-11-05");
-        homeSolution.registrarEmpleado("Juan",15000);
-        homeSolution.registrarEmpleado("Luis",80000, "EXPERTO");
-        homeSolution.registrarEmpleado("Julieta",15000);
+        //homeSolution.registrarEmpleado("Juan",15000);
+        //homeSolution.registrarEmpleado("Luis",80000, "EXPERTO");
+        //homeSolution.registrarEmpleado("Julieta",15000);
         
         PanelManager panelManager=new PanelManager(homeSolution);
         }

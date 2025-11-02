@@ -112,7 +112,7 @@ public class HomeSolutionTest {
     @Test(expected = IllegalArgumentException.class)
     public void testFinalizarProyectoConFechaInvalidaLanzaExcepcion() {
         Integer numeroProyecto = (homeSolution.proyectosPendientes().get(0)).getValor1();
-        homeSolution.finalizarProyecto(numeroProyecto, "2025-12-04");
+        homeSolution.finalizarProyecto(numeroProyecto, "2024-12-04");
     }
 
     // ============================================================

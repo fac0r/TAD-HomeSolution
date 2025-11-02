@@ -13,6 +13,8 @@ public class Proyecto {
 	
 
 
+	
+
 		private int id;
 	  
 
@@ -21,12 +23,21 @@ public class Proyecto {
 	    private String direccion;
 	    private Map<Integer, Tarea> tareas;
 	    private String fechaInicio;
-	    private String fechaFin;
+	  
+
+		private String fechaFin;
 	    private double [] duracion;
 	    private String estado;
 	    private boolean demorado;
-	    
-	    public Proyecto(String []cliente, String direccion, String [] listaTareas, String [] descripciones,  double [] duracion, String fechaInicio, String fechaFin) {
+	  
+
+		private double costoProyecto;
+	  
+	 
+
+
+
+		public Proyecto(String []cliente, String direccion, String [] listaTareas, String [] descripciones,  double [] duracion, String fechaInicio, String fechaFin) {
 	        this.id = 0;
 	        this.solicitante = cliente;
 	        this.direccion = direccion;
@@ -34,8 +45,9 @@ public class Proyecto {
 	        this.fechaInicio = fechaInicio;
 	        this.fechaFin = fechaFin;
 	        this.duracion= duracion;
-	        this.setEstado(Estado.activo);  
+	        this.setEstado(Estado.pendiente);  
 	        this.demorado = false;
+	        this.setCostoProyecto(0);
 	        
 	       
 	        
@@ -117,6 +129,36 @@ public class Proyecto {
 		public void setFechaFin(String fechaFin) {
 			this.fechaFin = fechaFin;
 		}
+		
+		
+		public String getDireccion() {
+			return direccion;
+		}
+		
+		  public String getFechaInicio() {
+				return fechaInicio;
+			}
+		  
+		   public double getCostoProyecto() {
+				return costoProyecto;
+			}
+
+
+
+			public void setCostoProyecto(double costoProyecto) {
+				this.costoProyecto = costoProyecto;
+			}
+			
+			
+			  public boolean isDemorado() {
+					return demorado;
+				}
+
+
+
+				public void setDemorado(boolean demorado) {
+					this.demorado = demorado;
+				}
 
 		@Override
 		public String toString() {
@@ -124,6 +166,9 @@ public class Proyecto {
 					+ ", tareas=" + tareas + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", duracion="
 					+ Arrays.toString(duracion) + ", estado=" + estado + ", demorado=" + demorado + "]";
 		}
+
+
+
 		
 	   
 }

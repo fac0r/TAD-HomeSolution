@@ -10,8 +10,10 @@ public class Tarea {
 	    private double duracion;
 	    private Empleado responsable;
 	    private String estado;
-	    
+	    private boolean registraRetraso;
 	
+
+
 
 		public Tarea(String titulo, String descripcion, double duracion) {
 	        this.titulo = titulo;
@@ -19,6 +21,7 @@ public class Tarea {
 	        this.duracion = duracion;
 	        this.setResponsable(null);
 	        this.setEstado(Estado.pendiente); // Por defecto, la tarea no está completada
+	        this.setRegistraRetraso(false);
 	    }
 
 
@@ -60,8 +63,36 @@ public class Tarea {
 		public void setEstado(String pendiente) {
 			this.estado = pendiente;
 		}
+		
+		
 
-	    
+		public boolean isRegistraRetraso() {
+			return registraRetraso;
+		}
+
+
+		public void setRegistraRetraso(boolean registraRetraso) {
+			this.registraRetraso = registraRetraso;
+		}
+
+		public int cantidadHorasTareaContratado() {
+			
+			
+			double  cantidadHoras = (this.getDuracion() * 8);
+			
+			return (int) cantidadHoras;
+			
+		}
+		
+		public int cantidadDiasTareaPlanta() {
+			
+			 double cantidadDias = this.getDuracion();
+			    cantidadDias = Math.round(cantidadDias);
+			    return (int) cantidadDias;
+			
+		}
+		
+		
 	    @Override
 		public String toString() {
 			return "Tarea [titulo=" + titulo + ", descripcion=" + descripcion + ", duracion=" + duracion

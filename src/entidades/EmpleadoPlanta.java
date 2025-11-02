@@ -4,9 +4,14 @@ public class EmpleadoPlanta extends Empleado{
 	
 	
 
+
+
 	private double valorDia;
 	private String categoria;
 	private boolean registraRetrasoEnProyectoActual;
+
+
+
 
 	public EmpleadoPlanta(String nombre, double valor, String categoria) {
 		super(nombre);
@@ -44,6 +49,31 @@ public class EmpleadoPlanta extends Empleado{
 
 	public int getN_legajo() {
 		return n_legajo;
+	}
+	
+
+	public double getValorDia() {
+		return valorDia;
+	}
+	
+	
+	public boolean isRegistraRetrasoEnProyectoActual() {
+		return registraRetrasoEnProyectoActual;
+	}
+
+
+	public void setRegistraRetrasoEnProyectoActual(boolean registraRetrasoEnProyectoActual) {
+		this.registraRetrasoEnProyectoActual = registraRetrasoEnProyectoActual;
+	}
+	
+	public double getValor( ) {
+		
+		double costo= this.getValorDia();
+		
+		if (!isRegistraRetrasoEnProyectoActual()) {
+				costo=(costo  * 1.02); }
+		
+		return costo;
 	}
 	
 	

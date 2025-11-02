@@ -4,6 +4,7 @@ public class EmpleadoContratado extends Empleado {
 	
 
 
+	
 	private double  valorHora;
 	
 
@@ -42,6 +43,15 @@ public class EmpleadoContratado extends Empleado {
 
 	public int getN_legajo() {
 		return n_legajo;
+	}
+	
+	
+	public double getValorHora() {
+		return valorHora;
+	}
+
+	public double getValor( ) {
+		return this.getValorHora();
 	}
 	
 	@Override
