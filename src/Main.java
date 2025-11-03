@@ -10,10 +10,21 @@ public class Main {
     public static void main(String[] args) {
         HomeSolution homeSolution=new HomeSolution();
         String titulos[]={"Pintar","Instalacion electrica","Trabajos jardineria","Instalar AA"};
+        String titulos2[]={"Pintar"};
+       
         String descripciones[]={"","","",""};
+        String descripciones2[]={"Color blanco" };
         double duracion[]={4,2,1,.5};
+        double duracion2[]={2};
         String cliente[]={"Pedro Gomez","pedro@hotmail.com","11-9280-6647"};
         homeSolution.registrarProyecto(titulos,descripciones,duracion,"San Martin 1000",cliente,"2025-11-01","2025-11-05");
+       
+        homeSolution.registrarProyecto(titulos2,descripciones2,duracion2,"San Martin 1000",cliente,"2025-11-01","2025-11-05");
+        homeSolution.registrarEmpleado("Juan",100);
+        homeSolution.registrarEmpleado("Julieta",100);
+        //homeSolution.registrarEmpleado("Luis", 100, "EXPERTO");
+        
+        
         //homeSolution.registrarEmpleado("Juan",15000);
         //homeSolution.registrarEmpleado("Luis",80000, "EXPERTO");
         //homeSolution.registrarEmpleado("Julieta",15000);

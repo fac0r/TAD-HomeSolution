@@ -401,7 +401,8 @@ public class HomeSolution implements IHomeSolution {
             
 			    }
 			}
-	
+		proyecto.setDemorado(true);
+		System.out.println("Ahora el proyecto esta demorado : " + proyecto.isDemorado());
 		actualizarCostoProyecto(numero);
 	}
 
@@ -453,16 +454,19 @@ public class HomeSolution implements IHomeSolution {
 		    boolean proyectoTerminoTarde = fin.compareTo(fechaFinOriginal) > 0;
 		
 		proyecto.setFechaFin(fin);
-		proyecto.setEstado(Estado.finalizado);
 		
 		  if (proyectoTerminoTarde) {
 		        proyecto.setDemorado(true);
 		    }
-
+		  
+		
+			
 		
 		System.out.println(" ANTES de llamar a costoProyecto()");
 		costoProyecto(numero);
 		 System.out.println(" DESPUÉS de llamar a costoProyecto()");
+		 
+		  proyecto.setEstado(Estado.finalizado);
 		 
 		//vuelve a agregar los empleados a la colaEmpleadosLibres
 		Map<Integer, Tarea> tareas = proyecto.retornarListaDeTareas();
@@ -511,10 +515,14 @@ public class HomeSolution implements IHomeSolution {
 	
 	@Override
 	public void reasignarEmpleadoEnProyecto(Integer numero, Integer legajo, String titulo) throws Exception {
+		
+		
 			
 		System.out.println("Estoy en reasignarEmpleadoEnproyecto los parametros que recibo son: "+ numero +" " +   legajo + " "  +titulo );
 		
 		Proyecto proyecto = obtenerProyectoPorId(numero);
+		
+
 		
 		Empleado empleadoAAsignar = encontrarEmpleadoPorLegajo(legajo);
 		
@@ -529,7 +537,7 @@ public class HomeSolution implements IHomeSolution {
 					System.out.println("Se encontro al empleado");
 					
 					
-					//restarCostoDelEmpleadoSuplantado(numero, tarea); 
+					
 					
 					recolocarEnColaEmpleadoQueSeraSuplantado(tarea);
 					
@@ -562,12 +570,25 @@ public class HomeSolution implements IHomeSolution {
 	
 	private double costoSegunSalarioEmpleado(Empleado empleado, int cantidadHoras) {
 		
-		double costo;
-		costo= cantidadHoras * empleado.getValor();
+		double costo=0;
 		
-		return costo;
+		if(empleado instanceof EmpleadoContratado) {
+		costo= cantidadHoras * empleado.getValor();}
 		
+		if (empleado instanceof EmpleadoPlanta) {
+			int cantidadDias= cantidadHoras;
+			costo = empleado.getValor( ) * cantidadDias;
+			System.out.println("El valor del empleado de planta es su valor : 0" + empleado.getValor( ) + "multiplicado por la cantidad de dias : "+ cantidadDias);
+			if (((EmpleadoPlanta) empleado).isRegistraRetrasoEnProyectoActual()==false) {
+				
+				
+				costo=(costo  * 1.02); 
+				System.out.println("Ademas el empledo no tien retrasos aumenta un dos por ciento por lo cual su valor es "+ costo);}
+		}
 		
+	
+	
+	return costo;
 	}
 	
 	private boolean laTareaTieneRetrasos(Tarea tarea) {
@@ -579,8 +600,13 @@ public class HomeSolution implements IHomeSolution {
 	@Override
 	public double costoProyecto(Integer numero) {
 		
-		
+		 
 		Proyecto proyecto = obtenerProyectoPorId(numero);
+		
+	    if (proyecto.isEstado() == Estado.finalizado) {
+	        System.out.println("El proyecto está finalizado, retornando costo guardado: " + proyecto.getCostoProyecto());
+	        return proyecto.getCostoProyecto();
+	    }
 		
 		System.out.println("El costo actual del proyecto antes de recalcular es " + proyecto.getCostoProyecto());
 		

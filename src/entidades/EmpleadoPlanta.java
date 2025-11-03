@@ -70,8 +70,7 @@ public class EmpleadoPlanta extends Empleado{
 		
 		double costo= this.getValorDia();
 		
-		if (!isRegistraRetrasoEnProyectoActual()) {
-				costo=(costo  * 1.02); }
+		
 		
 		return costo;
 	}

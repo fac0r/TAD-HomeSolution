@@ -33,6 +33,9 @@ public abstract class Empleado {
 	 public abstract   int consultarIdUltimoEmpleado ();
 	 public abstract void asignarNroDeLegajoAEmpleado(int nroLegajo);
 	 public abstract double getValor();
+	 
+
+
 
 
 	 public void informarDemora() {
@@ -88,6 +91,15 @@ public abstract class Empleado {
 		return "Empleado [nombre=" + nombre + ", n_legajo=" + n_legajo + ", estado=" + estado + ", demorasInformadas="
 				+ demorasInformadas + "]";
 	}
+
+
+
+
+
+
+
+
+
 
 
 

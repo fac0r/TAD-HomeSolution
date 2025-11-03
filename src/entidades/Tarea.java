@@ -95,8 +95,7 @@ public class Tarea {
 		
 	    @Override
 		public String toString() {
-			return "Tarea [titulo=" + titulo + ", descripcion=" + descripcion + ", duracion=" + duracion
-					+ ", responsable=" + responsable + ", estado=" + estado + "]";
+			return  titulo  ;
 		}
 
 }
